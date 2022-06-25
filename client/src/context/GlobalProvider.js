@@ -8,7 +8,9 @@ const init = {
     events: [],
     addEvent: (eventType, period) => { },
     getMonthEvents: (period) => { },
-
+    registerUser: (userInfo) => { },
+    loginUser: (userInfo) => { },
+    logout: () => { }
 };
 
 export const GlobalContext = createContext(init);
@@ -61,6 +63,75 @@ export const GlobalProvider = ({ children }) => {
         }
     }
 
+    const registerUser = (userInfo) => {
+
+        try {
+            // check if user exists
+            const users = localStorage.getItem('users') ? JSON.parse(localStorage.getItem('users')) : null;
+
+            if (!users) {
+                localStorage.setItem('users', JSON.stringify([userInfo]))
+                localStorage.setItem('user', JSON.stringify(userInfo))
+                dispatch({
+                    type: 'REGISTER',
+                    payload: userInfo
+                });
+            } else if (!users.find(el => el.email === userInfo.email)) {
+                let users = JSON.parse(localStorage.getItem('users'));
+                users.push(userInfo);
+                localStorage.setItem('users', JSON.stringify(users));
+                localStorage.setItem('user', JSON.stringify(userInfo))
+
+                dispatch({
+                    type: 'REGISTER',
+                    payload: userInfo
+
+                });
+            } else {
+                dispatch({
+                    type: 'ERROR',
+                    payload: 'email is allready taken'
+                });
+            }
+
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    const loginUser = (userInfo) => {
+
+        try {
+            // check if user exists
+            const users = localStorage.getItem('users') ? JSON.parse(localStorage.getItem('users')) : null;
+
+            if (!users) {
+                dispatch({
+                    type: 'ERROR',
+                    payload: 'no such an user'
+                });
+            } else if (!users.find(el => el.email === userInfo.email)) {
+                dispatch({
+                    type: 'ERROR',
+                    payload: 'invalid credenials'
+                });
+            } else {
+                dispatch({
+                    type: 'LOGIN',
+                    payload: userInfo
+                });
+                localStorage.setItem('user', JSON.stringify(userInfo))
+
+            }
+
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+
     useEffect(() => {
         localStorage.setItem('events', JSON.stringify(state.events));
 
@@ -68,8 +139,12 @@ export const GlobalProvider = ({ children }) => {
 
     return <GlobalContext.Provider value={{
         events: state.events,
+        user: state.user,
+        error: state.error,
         addEvent,
         getMonthEvents,
+        registerUser,
+        loginUser,
         dispatch
     }}>
         {children}
