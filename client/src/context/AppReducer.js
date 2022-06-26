@@ -53,6 +53,12 @@ const AppReducer = (state, action) => {
             return {
                 ...state,
                 error: null
+            };
+
+        case 'CHECK_AVAILABILITY':
+            return {
+                ...state,
+                dailyHours: action.payload
             }
 
         default:

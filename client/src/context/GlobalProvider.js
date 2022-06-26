@@ -2,15 +2,17 @@ import { createContext, useReducer, useEffect } from "react";
 import AppReducer from "./AppReducer";
 
 const init = {
-    user: null,
+    user: localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : null,
     isLoading: false,
     error: null,
-    events: [],
-    addEvent: (eventType, period) => { },
+    events: localStorage.getItem('events') ? JSON.parse(localStorage.getItem('events')) : [],
+    dailyHours: [],
+    addEvent: (period, eventType) => { },
     getMonthEvents: (period) => { },
     registerUser: (userInfo) => { },
     loginUser: (userInfo) => { },
-    logout: () => { }
+    logout: () => { },
+    checkAvailability: (day) => { }
 };
 
 export const GlobalContext = createContext(init);
@@ -19,26 +21,28 @@ export const GlobalProvider = ({ children }) => {
 
     const [state, dispatch] = useReducer(AppReducer, init);
 
-    const addEvent = async (eventType, period) => {
+    const addEvent = async (period, eventType) => {
         try {
-            let res = localStorage.getItem('events') ? JSON.parse(localStorage.getItem('events')) : [];
 
-            // event structute [{ period: 'MM/YYYY', eventsList: []}]
+            // event structute [{ period: 'MM/YYYY', eventsList: [ev]}]
+            // ev -> {email, hour, type}
 
-            let neededDay = res.find(el => el.period === period);
+            let neededDay = state.events.find(el => el.period === period);
 
             if (!neededDay) {
                 neededDay = { period, eventsList: [] };
                 neededDay.eventsList.push(eventType);
-                res.push(neededDay);
+                state.events.push(neededDay);
             } else {
                 neededDay.eventsList.push(eventType);
             }
 
+            localStorage.setItem('events', JSON.stringify(state.events));
+
             dispatch({
                 type: 'ADD_EVENT',
-                payload: res
-            })
+                payload: state.events
+            });
 
         } catch (err) {
             console.log(err);
@@ -131,16 +135,31 @@ export const GlobalProvider = ({ children }) => {
         }
     }
 
+    const checkAvailability = (dayObj) => {
+        const day = dayObj.format('DD/MM/YYYY');
 
-    useEffect(() => {
-        localStorage.setItem('events', JSON.stringify(state.events));
+        try {
 
-    }, [state.events])
+            // event structute [{ period: 'MM/YYYY', eventsList: []}]
+            const eventsForSelectedDay = state.events.find(el => el.period === day); // []
+
+            dispatch({
+                type: 'CHECK_AVAILABILITY',
+                payload: eventsForSelectedDay
+            })
+
+        } catch (err) {
+            console.log(err);
+        }
+
+    }
 
     return <GlobalContext.Provider value={{
         events: state.events,
         user: state.user,
         error: state.error,
+        dailyHours: state.dailyHours,
+        checkAvailability,
         addEvent,
         getMonthEvents,
         registerUser,
