@@ -1,7 +1,17 @@
+:root {
+    --main-color: #012E40;
+    --secondary-color: #F28705;
+    --main-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+}
+
 * {
     padding: 0;
     margin: 0;
     box-sizing: border-box;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
 }
 
 a {
