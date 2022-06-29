@@ -20,15 +20,11 @@ const Slider = ({ imagesArr }) => {
 const SliderContainer = styled.div`
     display: flex;
     flex-direction: column;
-    max-width: 1024px;
-    height: 400px;
-    margin: 0 auto;
-
+    
     .slider-wrapper {
         flex: 1;
         display: flex;
-        background: red;
-        height: 100%;
+        max-height: 500px;
     }
 
     img {

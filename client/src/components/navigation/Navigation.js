@@ -19,20 +19,22 @@ const Navigation = () => {
 
 const NavDesktop = ({ user }) => {
     return <NavigationContainerDesktop>
-        <div className="logo">
-            <Link to={'/home'}>HEP Studio</Link>
+        <div className="nav-desktop-inner">
+            <div className="logo">
+                <Link to={'/home'}>HEP Studio</Link>
+            </div>
+            <ul className="menu-links">
+                {user ? menu.map((el, i) => {
+                    return el.logged && <li key={i}>
+                        <Link to={`/${el.link}`}>{el.link}</Link>
+                    </li>
+                }) : menu.map((el, i) => {
+                    return !el.logged && <li key={i}>
+                        <Link to={`/${el.link}`}>{el.link}</Link>
+                    </li>
+                })}
+            </ul>
         </div>
-        <ul className="menu-links">
-            {user ? menu.map((el, i) => {
-                return el.logged && <li key={i}>
-                    <Link to={`/${el.link}`}>{el.link}</Link>
-                </li>
-            }) : menu.map((el, i) => {
-                return !el.logged && <li key={i}>
-                    <Link to={`/${el.link}`}>{el.link}</Link>
-                </li>
-            })}
-        </ul>
     </NavigationContainerDesktop>
 }
 
@@ -76,8 +78,15 @@ const NavMobile = ({ user }) => {
 
 const NavigationContainerDesktop = styled.div`
     display: flex;
-    padding: 10px 20px;
+    justify-content: center;
+    padding: 10px 0;
     background: var(--main-color);
+
+    .nav-desktop-inner {
+        display: flex;
+        flex: 1;
+        max-width: 1024px;
+    }
 
     a {
         color: #fff;
