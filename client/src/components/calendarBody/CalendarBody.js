@@ -1,10 +1,13 @@
 import { useState, useEffect } from "react";
 import dayjs from "dayjs";
+import { InsertEmoticon } from "@mui/icons-material";
 
 import Day from "../day/Day";
 import styled from "styled-components";
 
 import { monthMatrix } from "../../utils/monthMatrix";
+import { weekDays } from "../../utils/siteDetails";
+
 import ModalDayHours from "../modalDayHours/ModalDayHours";
 
 const CalendarBody = ({ monthIndex }) => {
@@ -52,29 +55,45 @@ const CalendarBody = ({ monthIndex }) => {
             )}
 
             <div className="c-body-wrapper">
-                {month.map((week, i) => (
-                    <div className="c-week-wrapper" key={i}>
-                        {week.map((d, idx) => {
-                            return (
-                                <Day
-                                    key={idx}
-                                    day={d}
-                                    inCurrentMonth={`${
-                                        d.month() === paddingMonthIndex &&
-                                        "in-current-month"
-                                    }`}
-                                    isToday={`${
-                                        dayjs().format("DD/MM/YYYY") ===
-                                        d.format("DD/MM/YYYY")
-                                            ? "today"
-                                            : ""
-                                    }`}
-                                    handleDayClick={(e) => handleDayClick(e, d)}
-                                />
-                            );
-                        })}
-                    </div>
-                ))}
+                <div className="c-body-inner">
+                    <ul className="week-days-list">
+                        {weekDays.map((d, i) => (
+                            <li className="week-day-name" key={i}>
+                                {d}
+                            </li>
+                        ))}
+                    </ul>
+                    {month.map((week, i) => (
+                        <div className="c-week-wrapper" key={i}>
+                            {week.map((d, idx) => {
+                                return (
+                                    <Day
+                                        key={idx}
+                                        day={d}
+                                        inCurrentMonth={`${
+                                            d.month() === paddingMonthIndex &&
+                                            "in-current-month"
+                                        }`}
+                                        isToday={`${
+                                            dayjs().format("DD/MM/YYYY") ===
+                                            d.format("DD/MM/YYYY")
+                                                ? "today"
+                                                : ""
+                                        }`}
+                                        handleDayClick={(e) =>
+                                            handleDayClick(e, d)
+                                        }
+                                    />
+                                );
+                            })}
+                        </div>
+                    ))}
+                </div>
+            </div>
+
+            <div className="smile-wrapper">
+                <span>Have an appointment! Pick a day...</span>
+                <InsertEmoticon className="smile-icon" />
             </div>
         </CalendarBodyContainer>
     );
@@ -83,23 +102,59 @@ const CalendarBody = ({ monthIndex }) => {
 const CalendarBodyContainer = styled.div`
     display: flex;
     flex-direction: column;
-    border: 1px dashed red;
+    overflow: scroll;
+    padding: 10px;
+    margin: 10px;
+    box-shadow: var(--main-shadow);
+    border-radius: 5px;
 
     .c-body-wrapper {
         display: flex;
         flex-direction: column;
-        border: 1px dashed green;
+    }
+
+    .c-body-inner {
+        flex-wrap: wrap;
+        overflow: scroll;
+        display: flex;
+        flex-direction: column;
         gap: 10px;
+    }
+
+    .week-days-list {
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
+    }
+
+    .week-day-name {
+        flex: 1;
+        padding: 10px;
+        min-width: 100px;
+        color: var(--secondary-color);
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
     .c-week-wrapper {
         display: flex;
-        border: 1px dashed blue;
         gap: 10px;
     }
 
     .today {
-        background: blue;
+        background: var(--secondary-color);
+    }
+
+    .smile-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+        padding-top: 10px;
+        border-top: 1px groove #fff;
+        color: var(--secondary-color);
     }
 `;
 

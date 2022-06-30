@@ -10,60 +10,41 @@ const Calendar = () => {
 
     return (
         <CalendarContainer className="calendar-container">
-            {/* <CalendarController setMonthIndex={setMonthIndex} />
-            <CalendarBody monthIndex={monthIndex} /> */}
+            <CalendarController
+                setMonthIndex={setMonthIndex}
+                monthIndex={monthIndex}
+            />
+            <CalendarBody monthIndex={monthIndex} />
 
-            <ul>
-                <div className="inner">
+            {/* <ul>
+                <div className="c-inner">
                     {new Array(100).fill("").map((el, i) => (
-                        <div key={i} className="row">
+                        <div key={i} className="c-row">
                             {new Array(20).fill("").map((e, idx) => (
                                 <p key={idx}>{idx}</p>
                             ))}
                         </div>
                     ))}
                 </div>
-            </ul>
+            </ul> */}
         </CalendarContainer>
     );
 };
 
 const CalendarContainer = styled.div`
-    /* max-width: 1024px; */
+    max-width: 1024px;
     display: flex;
-    /* margin: 20px auto; */
+    margin: 0 auto;
     flex-direction: column;
-    /* justify-content: center; */
-    /* align-items: center; */
-    border: 2px dashed green;
     overflow: scroll;
 
-    .row {
-        border: 1px dashed blue;
-        margin: 5px;
-        padding: 2px;
-        display: flex;
-        background: lightcoral;
-
-        p {
-            border: 1px dashed;
-            margin: 5px;
-            padding: 2px;
-        }
+    &::-webkit-scrollbar,
+    *::-webkit-scrollbar {
+        display: none;
     }
 
     @media (max-width: 576px) {
-        ul {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .inner {
-            flex-wrap: wrap;
-            overflow: scroll;
-            display: flex;
-            flex-direction: column;
-        }
+        margin: 15px;
     }
 `;
 
