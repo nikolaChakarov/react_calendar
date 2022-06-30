@@ -1,14 +1,13 @@
-import { useState, useEffect } from 'react';
-import dayjs from 'dayjs';
+import { useState, useEffect } from "react";
+import dayjs from "dayjs";
 
-import Day from '../day/Day';
-import styled from 'styled-components';
+import Day from "../day/Day";
+import styled from "styled-components";
 
-import { monthMatrix } from '../../utils/monthMatrix';
-import ModalDayHours from '../modalDayHours/ModalDayHours';
+import { monthMatrix } from "../../utils/monthMatrix";
+import ModalDayHours from "../modalDayHours/ModalDayHours";
 
 const CalendarBody = ({ monthIndex }) => {
-
     const [month, setMonth] = useState([]);
     const [paddingMonthIndex, setPaddingMonthIndex] = useState(monthIndex);
 
@@ -22,55 +21,66 @@ const CalendarBody = ({ monthIndex }) => {
         setClickedDay(d);
 
         setShowDayModal(true);
-
-    }
-
+    };
 
     useEffect(() => {
         setMonth(monthMatrix(monthIndex));
-    }, [monthIndex])
+    }, [monthIndex]);
 
     /* set padding class days */
     useEffect(() => {
         if (monthIndex === dayjs().month()) {
-            setPaddingMonthIndex(dayjs().month())
+            setPaddingMonthIndex(dayjs().month());
         } else if (monthIndex >= 0 && monthIndex <= 11) {
             setPaddingMonthIndex(monthIndex);
         } else if (monthIndex < 0 && monthIndex % 12 !== 0) {
-            setPaddingMonthIndex(monthIndex % 12 + 12);
+            setPaddingMonthIndex((monthIndex % 12) + 12);
         } else if (monthIndex > 11) {
             setPaddingMonthIndex(monthIndex % 12);
         } else {
             setPaddingMonthIndex(0);
         }
-    }, [monthIndex])
+    }, [monthIndex]);
 
+    return (
+        <CalendarBodyContainer className="calendar-body">
+            {showDayModal && (
+                <ModalDayHours
+                    setShowDayModal={setShowDayModal}
+                    clickedDay={clickedDay}
+                />
+            )}
 
-    return <CalendarBodyContainer>
-
-        {showDayModal && <ModalDayHours setShowDayModal={setShowDayModal} clickedDay={clickedDay} />}
-
-        <div className="c-body-wrapper">
-            {month.map((week, i) => (
-                <div className="c-week-wrapper" key={i}>
-                    {week.map((d, idx) => {
-                        return (
-                            <Day
-                                key={idx}
-                                day={d}
-                                inCurrentMonth={`${d.month() === paddingMonthIndex && 'in-current-month'}`} isToday={`${dayjs().format('DD/MM/YYYY') === d.format('DD/MM/YYYY') ? 'today' : ''}`}
-                                handleDayClick={(e) => handleDayClick(e, d)}
-                            />
-                        )
-                    })}
-                </div>
-            ))}
-        </div>
-    </CalendarBodyContainer>
+            <div className="c-body-wrapper">
+                {month.map((week, i) => (
+                    <div className="c-week-wrapper" key={i}>
+                        {week.map((d, idx) => {
+                            return (
+                                <Day
+                                    key={idx}
+                                    day={d}
+                                    inCurrentMonth={`${
+                                        d.month() === paddingMonthIndex &&
+                                        "in-current-month"
+                                    }`}
+                                    isToday={`${
+                                        dayjs().format("DD/MM/YYYY") ===
+                                        d.format("DD/MM/YYYY")
+                                            ? "today"
+                                            : ""
+                                    }`}
+                                    handleDayClick={(e) => handleDayClick(e, d)}
+                                />
+                            );
+                        })}
+                    </div>
+                ))}
+            </div>
+        </CalendarBodyContainer>
+    );
 };
 
 const CalendarBodyContainer = styled.div`
-
     display: flex;
     flex-direction: column;
     border: 1px dashed red;
@@ -91,7 +101,6 @@ const CalendarBodyContainer = styled.div`
     .today {
         background: blue;
     }
-
 `;
 
 export default CalendarBody;

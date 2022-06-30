@@ -1,29 +1,34 @@
-import { Routes, Route } from 'react-router-dom';
-import styled from 'styled-components';
+import { Routes, Route } from "react-router-dom";
+import styled from "styled-components";
 
-import Navigation from './components/navigation/Navigation';
-import Calendar from './pages/Calendar';
+import Navigation from "./components/navigation/Navigation";
+import Calendar from "./pages/Calendar";
 
-import Register from './components/register/Register';
-import Login from './components/login/Login';
-import Logout from './components/logout/Logout';
-import Footer from './components/footer/Footer';
-import Home from './pages/home/Home';
+import Register from "./components/register/Register";
+import Login from "./components/login/Login";
+import Logout from "./components/logout/Logout";
+import Footer from "./components/footer/Footer";
+import Home from "./pages/home/Home";
+import Checkout from "./components/checkout/Checkout";
 
 const App = () => {
-    return <AppContainer>
-        <Navigation />
+    return (
+        <AppContainer>
+            <Navigation />
 
-        <Routes>
-            <Route path={'/home'} element={<Home />} />
-            <Route path={'/calendar'} element={<Calendar />} />
-            <Route path={'/register'} element={<Register />} />
-            <Route path={'/login'} element={<Login />} />
-            <Route path={'/logout'} element={<Logout />} />
-        </Routes>
+            <Routes>
+                <Route path={"/"} element={<Home />} />
+                <Route path={"/home"} element={<Home />} />
+                <Route path={"/calendar"} element={<Calendar />} />
+                <Route path={"/checkout"} element={<Checkout />} />
+                <Route path={"/register"} element={<Register />} />
+                <Route path={"/login"} element={<Login />} />
+                <Route path={"/logout"} element={<Logout />} />
+            </Routes>
 
-        <Footer />
-    </AppContainer>
+            <Footer />
+        </AppContainer>
+    );
 };
 
 const AppContainer = styled.div`

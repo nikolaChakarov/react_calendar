@@ -1,29 +1,42 @@
-import dayjs from 'dayjs';
-import styled from 'styled-components';
-import { weekDays } from '../../utils/siteDetails';
+import dayjs from "dayjs";
+import styled from "styled-components";
+import { weekDays } from "../../utils/siteDetails";
 
-import { ArrowCircleLeft, ArrowCircleRight } from '@mui/icons-material';
+import { ArrowCircleLeft, ArrowCircleRight } from "@mui/icons-material";
 
 const CalendarController = ({ setMonthIndex }) => {
+    return (
+        <CalendarControllerContainer className="calendar-controller">
+            <div className="c-controller-wrapper">
+                <div className="arrows-wrapper">
+                    <ArrowCircleLeft
+                        className="c-controller-arrow"
+                        onClick={() => setMonthIndex((prev) => prev - 1)}
+                    />
+                    <ArrowCircleRight
+                        className="c-controller-arrow"
+                        onClick={() => setMonthIndex((prev) => prev + 1)}
+                    />
 
-    return <CalendarControllerContainer>
-        <div className="c-controller-wrapper">
-            <div className="arrows-wrapper">
-                <ArrowCircleLeft className='c-controller-arrow' onClick={() => setMonthIndex(prev => prev - 1)} />
-                <ArrowCircleRight className='c-controller-arrow' onClick={() => setMonthIndex(prev => prev + 1)} />
+                    <button
+                        className="c-controller-bttn"
+                        onClick={() => setMonthIndex(dayjs().month())}
+                    >
+                        Today
+                    </button>
+                </div>
 
-                <button className='c-controller-bttn' onClick={() => setMonthIndex(dayjs().month())}>Today</button>
+                <ul className="week-days-list">
+                    {weekDays.map((d, i) => (
+                        <li className="week-day-name" key={i}>
+                            {d}
+                        </li>
+                    ))}
+                </ul>
             </div>
-
-            <ul className="week-days-list">
-                {weekDays.map((d, i) => (
-                    <li className="week-day-name" key={i}>{d}</li>
-                ))}
-            </ul>
-
-        </div>
-    </CalendarControllerContainer>
-}
+        </CalendarControllerContainer>
+    );
+};
 
 const CalendarControllerContainer = styled.div`
     display: flex;
