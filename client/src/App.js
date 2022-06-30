@@ -1,4 +1,5 @@
 import { Routes, Route } from "react-router-dom";
+
 import styled from "styled-components";
 
 import Navigation from "./components/navigation/Navigation";
@@ -9,7 +10,7 @@ import Login from "./components/login/Login";
 import Logout from "./components/logout/Logout";
 import Footer from "./components/footer/Footer";
 import Home from "./pages/home/Home";
-import Checkout from "./components/checkout/Checkout";
+import Stripe from "./components/stripe/Stripe";
 
 const App = () => {
     return (
@@ -20,7 +21,9 @@ const App = () => {
                 <Route path={"/"} element={<Home />} />
                 <Route path={"/home"} element={<Home />} />
                 <Route path={"/calendar"} element={<Calendar />} />
-                <Route path={"/checkout"} element={<Checkout />} />
+
+                <Route path="/checkout" element={<Stripe />} />
+
                 <Route path={"/register"} element={<Register />} />
                 <Route path={"/login"} element={<Login />} />
                 <Route path={"/logout"} element={<Logout />} />

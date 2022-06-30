@@ -1,65 +1,65 @@
 const AppReducer = (state, action) => {
     switch (action.type) {
-        case 'REGISTER':
+        case "REGISTER":
             return {
                 ...state,
                 user: action.payload,
                 isLoading: false,
-                error: null
+                error: null,
             };
 
-        case 'LOGIN':
+        case "LOGIN":
             return {
                 ...state,
                 user: action.payload,
                 isLoading: false,
-                error: null
+                error: null,
             };
 
-        case 'LOGOUT':
+        case "LOGOUT":
             return {
                 ...state,
                 user: null,
             };
 
-        case 'GET_MONTH_EVENTS':
+        case "GET_MONTH_EVENTS":
             return {
                 ...state,
                 events: [...action.payload],
                 isLoading: false,
-                error: null
+                error: null,
             };
 
-        case 'ADD_EVENT':
+        case "ADD_EVENT":
             return {
                 ...state,
                 events: [...action.payload],
                 isLoading: false,
-                error: null
+                error: null,
             };
 
-        case 'IS_LOADING':
+        case "IS_LOADING":
             return {
                 ...state,
-                isLoading: true
+                isLoading: true,
             };
-        case 'ERROR':
+        case "ERROR":
             return {
                 ...state,
-                error: action.payload
-            };
-
-        case 'CLEAR_ERROR':
-            return {
-                ...state,
-                error: null
+                error: action.payload,
             };
 
-        case 'CHECK_AVAILABILITY':
+        case "CLEAR_ERROR":
             return {
                 ...state,
-                dailyHours: action.payload
-            }
+                error: null,
+            };
+
+        case "CHECK_AVAILABILITY":
+            return {
+                ...state,
+                dailyHours: action.payload,
+            };
 
         default:
             return state;
